@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!--    <link rel="icon" th:href="@{/front_end/images/wall.jpg}">-->
+    <title>首页</title>
+    <link th:href="@{/script/layui/css/layui.css}" type="text/css" rel="stylesheet"/>
+    <script th:src="@{/script/layui/layui.js}" type="text/javascript" rel="script"></script>
+</head>
+<body>
+<form class="layui-form" th:action="@{/login}" method="post">
+    <div class="layui-form-item">
+        <label class="layui-form-label">用户名:</label>
+        <div class="layui-input-inline">
+            <input type="text" name="j_username" required lay-verify="required" placeholder="请输入用户名" autocomplete="off"
+                   class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">密&nbsp;&nbsp;码:</label>
+        <div class="layui-input-inline">
+            <input type="password" name="j_password" required lay-verify="required" placeholder="请输入密码"
+                   autocomplete="off"
+                   class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+            <span id="basePath" th:text="${#httpServletRequest.getContextPath()}" hidden></span>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+</form>
+<script type="text/javascript" th:inline="none">
+
+
+    layui.use(['form', 'jquery', 'layer'], function () {
+        var form = layui.form,
+            $ = layui.jquery,
+            layer = layui.layer;
+        var contextPath = $("#basePath").html();
+        // console.log('contextPath===>');
+        // console.log(contextPath);
+        //监听提交
+        form.on('submit(formDemo)', function (data) {
+            // console.log(JSON.stringify(data.field));
+            $.ajax({
+                url: contextPath + "/login",
+                type: 'POST',
+                data: data.field,
+                dataType: 'json',
+                success: function (res) {
+                    // debugger;
+                    // console.log(res)
+                    if (res.status == 200) {
+                        layer.msg("登录成功");
+                        window.location.href = contextPath + "/";
+                    } else {
+                        layer.msg(res.message)
+                    }
+                }
+            });
+            return false;
+        });
+    });
+
+</script>
+</body>
+</html>

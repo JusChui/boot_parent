@@ -1,0 +1,23 @@
+server:
+  servlet:
+    context-path: /boot
+  port: 9090
+
+spring:
+  thymeleaf:
+    cache: false
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    username: postgres
+    password: ju147...
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:postgresql://x.x.x.x:5432/xh
+
+mybatis:
+  mapper-locations: classpath:com/jus/**/*.xml
+
+logging:
+  level:
+    com.jus: debug
+#  config: classpath:logback.xml
+

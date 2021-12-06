@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jus.bussiness.sys.dao.MenuDao">
+    <resultMap id="menuMaps" type="com.jus.bussiness.sys.vo.MenuVO">
+        <id property="id" column="id"/>
+        <result property="menuUrl" column="menu_url"/>
+        <result property="menuName" column="menu_name"/>
+        <result property="menuLevel" column="menu_level"/>
+        <result property="menuOrder" column="menu_order"/>
+        <result property="deleteFlag" column="delete_flag"/>
+        <collection property="roles" ofType="com.jus.bussiness.sys.vo.Role">
+            <id property="roleId" column="role_id"/>
+            <result property="roleName" column="role_name"/>
+            <result property="roleNameZh" column="role_name_zh"/>
+            <result property="deleteFlag" column="delete_flag"/>
+        </collection>
+    </resultMap>
+    <select id="getMenus" resultMap="menuMaps" resultType="com.jus.bussiness.sys.vo.MenuVO">
+        SELECT M.*,
+               r.role_id,
+               r.role_name,
+               r.role_name_zh
+        FROM menu M
+                 LEFT JOIN menu_role mr ON mr.menu_id = M.ID
+                 LEFT JOIN ROLE r ON mr.role_id = r.role_id
+        where 1 = 1
+          and M.delete_flag = '00'
+    </select>
+</mapper>

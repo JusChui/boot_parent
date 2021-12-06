@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jus.bussiness.sys.dao.UserDao">
+    <select id="getUsrInfo" resultType="com.jus.bussiness.sys.vo.UsrVO">
+        SELECT u.user_id AS usrId,
+        u.user_name AS usrName,
+        u.PASSWORD AS PASSWORD,
+        u.create_time AS createTime,
+        u.update_time AS updateTime,
+        CASE
+        WHEN u.enabled = '1' THEN
+        'true'
+        ELSE 'false'
+        END AS enabled
+        FROM usr_info u
+        where 1=1
+        <if test="usr.usrName != null and usr.usrName != ''">
+            and u.user_name = #{usr.usrName}
+        </if>
+    </select>
+    <select id="getRolesByUsrId" resultType="com.jus.bussiness.sys.vo.Role">
+        select r.role_id      as roleId,
+               r.role_name    as roleName,
+               r.role_name_zh as roleNameZh,
+               r.delete_flag  as deleteFlag
+        from role r
+                 left join usr_role ur on r.role_id = ur.role_id
+        where 1 = 1
+          and ur.usr_id = #{id}
+    </select>
+</mapper>
